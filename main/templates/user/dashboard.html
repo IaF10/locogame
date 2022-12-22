@@ -1,0 +1,39 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<main class="container my-4">
+  <!-- Featured Products -->
+  <h3 class="my-4 border-bottom pb-1">My Dashboard</h3>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <!-- <a href="#" class="list-group-item">Biodata</a> -->
+        <a href="{% url 'logout' %}" class="text-danger list-group-item"
+          >Logout</a
+        >
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="card card-profil card-left">
+        <div class="row no-gutters">
+          <div class="col-5 card-image">
+            <img src="/media/irqi.jpg" class="card-img-top h-60" alt="..." />
+          </div>
+          <div class="col-7">
+            <div class="card-body">
+              <h5 class="card-title text-profil font-weight-bold">Profil</h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Nama : Irqi Anbi Fahrezi</li>
+                <li class="list-group-item">NIM : 2011102441036</li>
+                <li class="list-group-item">Kelas : A</li>
+                <li class="list-group-item">
+                  Email : 2011102441036@umkt.ac.id
+                </li>
+                <li class="list-group-item">Prodi : S1 Teknik Informatika</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

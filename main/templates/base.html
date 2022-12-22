@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>LocoGame</title>
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'fontawesome-free/css/all.min.css' %}"
+    />
+    <!-- Bootstrap 4 CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'bs4/bootstrap.min.css' %}"
+    />
+    <!-- Main Jquery -->
+    <script type="text/javascript" src="{% static 'jquery.min.js' %}"></script>
+    <!-- Bootstrap 4 JS -->
+    <script
+      type="text/javascript"
+      src="{% static 'bs4/bootstrap.min.js' %}"
+    ></script>
+    <!-- Custom JS -->
+    <script
+      type="text/javascript"
+      src="{% static 'custom.js' %}"
+    ></script>
+    <!-- Custom css -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'custom.css' %}"
+    />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+      <div class="container">
+        <a class="navbar-brand" href="/">LocoGame</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <form class="form-inline my-2 my-lg-0" action="/search">
+              <div class="input-group">
+                <input name="q" type="text" class="form-control" placeholder="search" />
+                <div class="input-group-append">
+                  <button class="btn btn-dark" type="submit" id="button-addon2">Search</button>
+                </div>
+              </div>
+            </form>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'category-list' %}"
+                >Categories</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'brand-list' %}"
+                >Brands</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'cart' %}"
+                ><i class="fa fa-shopping-cart"></i> Cart (<span class="cart-list">{{request.session.cartdata|length}}</span>)</a
+              >
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user"></i> My Account
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'my_dashboard' %}">My Dashboard</a>
+                  <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                  <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                  <a class="dropdown-item" href="{% url 'signup' %}">Sign up</a>
+                {% endif %}
+              </div>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link text-white" href="#"
+                ><i class="fa fa-user"></i> My Account</a
+              >
+            </li> -->
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    {% block content %} {% endblock %}
+
+    <footer class="pt-4 my-md-5 pt-md-5 border-top container">
+      <div class="row">
+        <div class="col-12 col-md">
+          <a href="#">LocoGame</a>
+          <small class="d-block mb-3 text-muted">&copy; 2022</small>
+        </div>
+        <div class="col-6 col-md">
+          <h5>Part</h5>
+          <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">Motherboard</a></li>
+            <li><a class="text-muted" href="#">Graphic Cards</a></li>
+            <li><a class="text-muted" href="#">Gaming Case</a></li>
+            <li><a class="text-muted" href="#">Memory</a></li>
+            <li><a class="text-muted" href="#">PSU</a></li>
+            <li><a class="text-muted" href="#">Cooling</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-md">
+          <h5>Accecories</h5>
+          <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">Keyboard</a></li>
+            <li><a class="text-muted" href="#">Headset</a></li>
+            <li><a class="text-muted" href="#">Controller</a></li>
+            <li><a class="text-muted" href="#">Webcam</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-md">
+          <h5>About</h5>
+          <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">Team</a></li>
+            <li><a class="text-muted" href="#">Locations</a></li>
+            <li><a class="text-muted" href="#">Email</a></li>
+            <li><a class="text-muted" href="#">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
