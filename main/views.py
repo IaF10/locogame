@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse,HttpResponse
-from .models import Banner,Category,Brand,Product,ProductAttribute, CartOrder, CartOrderItems,ProductReview
+from .models import Banner,Category,Brand,Product,ProductAttribute, CartOrder, CartOrderItems,ProductReview, MotherboardAPI
 from django.db.models import Max,Min,Count
 from django.template.loader import render_to_string
 from .forms import SignupForm, ReviewAdd
@@ -11,6 +11,8 @@ from django.urls import reverse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from paypal.standard.forms import PayPalPaymentsForm
+
+import requests
 
 
 # home page
@@ -27,7 +29,14 @@ def category_list(request):
 # Brand
 def brand_list(request):
 	data=Brand.objects.all().order_by('-id')
-	return render(request,'brand_list.html', {'data':data})
+ 
+	mother = MotherboardAPI.objects.all()
+ 
+	context = {
+		"mother" : mother,
+  		'data':data
+	}
+	return render(request,'brand_list.html', context)
 
 # Product List
 def product_list(request):
@@ -158,7 +167,7 @@ def cart_list(request):
 		return render(request, 'cart.html',{'cart_data':'','totalitems':0,'total_amt':total_amt})
 
 # Delete Cart Item
-def delete_cart_item(requeest):
+def delete_cart_item(request):
 	p_id=str(request.GET['id'])
 	if 'cartdata' in request.session:
 		if p_id in request.session['cartdata']:
@@ -172,7 +181,7 @@ def delete_cart_item(requeest):
 	return JsonResponse({'data':t, 'totalitems':len(request.session['cartdata'])})
 
 # Update Cart Item
-def update_cart_item(requeest):
+def update_cart_item(request):
 	p_id=str(request.GET['id'])
 	p_qty=request.GET['qty']
 	if 'cartdata' in request.session:
@@ -196,7 +205,7 @@ def signup(request):
 			pwd=form.cleaned_data.get('password1')
 			user=authenticate(username=username,password=pwd)
 			login(request, user)
-			return redirected('home')
+			return redirect('home')
 	form=SignupForm
 	return render(request, 'registration/signup.html',{'form':form})
 
@@ -270,3 +279,47 @@ def save_review(request,pid):
 # User Dashboard
 def my_dashboard(request):
 	return render (request, 'user/dashboard.html')
+
+#API
+def sinkron_api(request):
+    
+	url = "https://computer-components-api.p.rapidapi.com/motherboard"
+	querystring = {"limit":"10","offset":"0"}
+	headers = {
+		"X-RapidAPI-Key": "ba85849e35mshaa72c68ccba2d83p1e92f0jsn6969919cf633",
+		"X-RapidAPI-Host": "computer-components-api.p.rapidapi.com"
+	}
+	response = requests.request("GET", url, headers=headers, params=querystring)
+
+	data = response.json()
+	
+	for d in data:
+		cek_mother = MotherboardAPI.objects.filter(id_mother=d['id'])
+		if cek_mother.exists():
+			mother = cek_mother.first()
+			mother.id_mother = d['id']
+			mother.title = d['title']
+			mother.link_olshop = d['link']
+			mother.img = d['img']
+			mother.brandme = d['brand']
+			mother.modelme = d['model']
+			mother.formFactor = d['formFactor']
+			mother.chipset = d['chipset']
+			mother.memorySlots = d['memorySlots']
+			mother.socketType = d['socketType']
+			mother.save()
+		else:
+			MotherboardAPI.objects.create(
+				id_mother = d['id'],
+				title = d['title'],
+				link_olshop = d['link'],
+				img = d['img'],
+				brandme = d['brand'],
+				modelme = d['model'],
+				formFactor = d['formFactor'],
+				chipset = d['chipset'],
+				memorySlots = d['memorySlots'],
+				socketType = d['socketType']
+			)
+	return HttpResponse("<h1>Berhasil connect API</h1>")
+ 

@@ -145,3 +145,16 @@ class ProductReview(models.Model):
 
     def get_review_rating(self):
         return self.review_rating
+    
+
+class MotherboardAPI(models.Model):
+    id_mother = models.CharField(max_length=200, blank=True, null=True)
+    title = models.CharField(max_length=200, blank=True, null=True)
+    link_olshop = models.CharField(max_length=200, blank=True, null=True)
+    img = models.CharField(max_length=200, blank=True, null=True)
+    brandme = models.CharField(max_length=200, blank=True, null=True)
+    modelme  = models.CharField(max_length=200, blank=True, null=True)
+    formFactor = models.CharField(max_length=200, blank=True, null=True)
+    chipset = models.CharField(max_length=200, blank=True, null=True)
+    memorySlots = models.CharField(max_length=200, blank=True, null=True)
+    socketType = models.CharField(max_length=200, blank=True, null=True)

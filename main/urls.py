@@ -25,6 +25,7 @@ urlpatterns=[
     path('payment-done/', views.payment_done, name='payment_done'),
     path('payment-cancelled/', views.payment_canceled, name='payment_cancelled'),
     path('save-review/<int:pid>',views.save_review, name='save-review'),
+    path("sinkronAPI/", views.sinkron_api, name="sinkronAPI"),
     # user
     path('my-dashboard',views.my_dashboard, name='my_dashboard'),
     #end
